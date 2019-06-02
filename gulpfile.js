@@ -16,13 +16,24 @@ gulp.task('task-name', function(){
 
 */
 
+gulp.task('browserSync', function() {
+  browserSync.init({
+    server: {
+      baseDir: 'app/'
+    },
+  })
+})
+
 gulp.task('sass', function(cb) {
 	return gulp.src('app/scss/main.scss')
 		.pipe(sass())
 		.pipe(gulp.dest('app/css'))
+		.pipe(browserSync.reload({
+      		stream: true
+    	}))
 		//cb() //close async function. Otherwise throws err at not having completed
 });
 
-gulp.task('watch', function(){
+gulp.task('watch', ['browserSync','sass'], function(){
 	gulp.watch('app/scss/**/*.scss', ['sass']);
 });
