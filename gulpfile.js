@@ -1,7 +1,8 @@
 var 
 	gulp = require('gulp'),
 	sass = require('gulp-sass'),
-	browserSync = require("browser-sync").create();
+	browserSync = require("browser-sync").create(),
+	sourcemaps = require('gulp-sourcemaps');
 
 /*
 
@@ -24,14 +25,13 @@ gulp.task('browserSync', function() {
   })
 })
 
-gulp.task('sass', function(cb) {
+gulp.task('sass', function() {
 	return gulp.src('app/scss/main.scss')
+		.pipe(sourcemaps.init())
 		.pipe(sass())
+		.pipe(sourcemaps.write('maps'))
 		.pipe(gulp.dest('app/css'))
-		.pipe(browserSync.reload({
-      		stream: true
-    	}))
-		//cb() //close async function. Otherwise throws err at not having completed
+		.pipe(browserSync.stream({match: 'app/css/**/*.css'}))
 });
 
 gulp.task('watch', ['browserSync','sass'], function(){
