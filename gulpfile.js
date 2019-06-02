@@ -1,6 +1,7 @@
 var 
 	gulp = require('gulp'),
-	sass = require('gulp-sass');
+	sass = require('gulp-sass'),
+	browserSync = require("browser-sync").create();
 
 /*
 
@@ -15,14 +16,13 @@ gulp.task('task-name', function(){
 
 */
 
-gulp.task('hello', function(cb) {
-	console.log('Hello Rocky. Happy Sunday. You got this!');
-	cb();
-})
-
-gulp.task('sass', function() {
+gulp.task('sass', function(cb) {
 	return gulp.src('app/scss/main.scss')
 		.pipe(sass())
 		.pipe(gulp.dest('app/css'))
 		cb() //close async function. Otherwise throws err at not having completed
-})
+});
+
+gulp.task('watch', ['sass'], function(){
+	gulp.watch('app/scss/**/.scss', ['sass']);
+});
